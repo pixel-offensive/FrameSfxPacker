@@ -1,70 +1,132 @@
-# Getting Started with Create React App
+# Minecraft 序列帧打包工具
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+一个用于 Minecraft 的序列帧打包工具，可以将多个图片合并成一个序列帧图片，并生成对应的 JSON 配置文件。
 
-## Available Scripts
+## 功能特点
 
-In the project directory, you can run:
+- 🖼️ 支持单张图片上传和文件夹批量上传
+- 🔄 自动按文件名中的数字排序
+- 🎮 支持拖拽调整图片顺序
+- 👀 实时预览动画效果
+- ⚙️ 可调整动画播放速度
+- 📦 导出序列帧图片和配置文件
+- 🎨 支持透明背景图片
 
-### `npm start`
+## 在线体验
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+访问 [GitHub Pages](https://yourusername.github.io/frame-sfx-packer) 在线体验
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## 本地开发
 
-### `npm test`
+### 环境要求
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- Node.js >= 18.0.0
+- npm >= 8.0.0
 
-### `npm run build`
+### 安装依赖
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```bash
+npm install
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### 启动开发服务器
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```bash
+npm start
+```
 
-### `npm run eject`
+### 构建生产版本
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+```bash
+npm run build
+```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## 使用说明
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+1. 上传图片
+   - 点击"上传图片"按钮选择单张图片
+   - 点击"选择文件夹"按钮批量上传图片
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+2. 调整顺序
+   - 拖拽图片可以调整顺序
+   - 图片会自动按文件名中的数字排序
 
-## Learn More
+3. 预览动画
+   - 点击"预览动画"按钮查看效果
+   - 可以调整播放速度
+   - 可以手动选择特定帧
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+4. 导出文件
+   - 点击"导出序列帧"按钮
+   - 输入文件名（不需要扩展名）
+   - 系统会自动生成同名的 PNG 和 JSON 文件
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## 导出文件说明
 
-### Code Splitting
+### PNG 文件
+- 所有图片会水平排列
+- 保持原始图片的尺寸
+- 支持透明背景
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### JSON 文件
+```json
+{
+  "frames": [
+    {
+      "filename": "00.png",
+      "frame": {
+        "h": 1,
+        "w": 1,
+        "x": 0,
+        "y": 0
+      },
+      "scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      }
+    }
+  ],
+  "meta": {
+    "format": "RGBA8888",
+    "image": "frames.png",
+    "scale": "1",
+    "size": {
+      "h": 1,
+      "w": 6
+    },
+    "version": "1.0"
+  }
+}
+```
 
-### Analyzing the Bundle Size
+## 技术栈
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+- React
+- Ant Design
+- Ant Design Pro Components
+- React DnD (拖拽功能)
+- HTML5 Canvas (图片处理)
 
-### Making a Progressive Web App
+## 贡献指南
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+1. Fork 本仓库
+2. 创建您的特性分支 (`git checkout -b feature/AmazingFeature`)
+3. 提交您的更改 (`git commit -m 'Add some AmazingFeature'`)
+4. 推送到分支 (`git push origin feature/AmazingFeature`)
+5. 打开一个 Pull Request
 
-### Advanced Configuration
+## 许可证
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+本项目采用 MIT 许可证 - 详情请参阅 [LICENSE](LICENSE) 文件
 
-### Deployment
+## 联系方式
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+如有任何问题或建议，请通过以下方式联系：
 
-### `npm run build` fails to minify
+- 提交 Issue
+- 发送邮件至 [您的邮箱]
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## 致谢
+
+感谢所有为本项目做出贡献的开发者！
