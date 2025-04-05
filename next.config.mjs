@@ -12,7 +12,7 @@ const nextConfig = {
      *
      * @see https://nextjs.org/docs/app/api-reference/next-config-js/basePath
      */
-    basePath: "/frame-sfx-packer",
+    basePath: "/FrameSfxPacker",
 
     /**
      * Disable server-based image optimization. Next.js does not support
