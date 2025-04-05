@@ -1,9 +1,10 @@
 import React from 'react';
 import { useDrag, useDrop } from 'react-dnd';
-import { Image, List } from 'antd';
-import { DragOutlined } from '@ant-design/icons';
+import { Image, List, Button } from 'antd';
+import { DragOutlined, DeleteOutlined } from '@ant-design/icons';
+import { useConfig } from '../contexts/ConfigContext';
 
-const DraggableImageItem = ({ image, index, moveImage }) => {
+const DraggableImageItem = ({ image, index, moveImage, onDelete }) => {
   const [{ isDragging }, drag] = useDrag({
     type: 'IMAGE',
     item: { index },
@@ -21,6 +22,8 @@ const DraggableImageItem = ({ image, index, moveImage }) => {
       }
     },
   });
+
+  const { backgroundStyle, backgroundStyles } = useConfig();
 
   return (
     <div
@@ -43,9 +46,7 @@ const DraggableImageItem = ({ image, index, moveImage }) => {
         display: 'flex', 
         alignItems: 'center', 
         justifyContent: 'center',
-        backgroundImage: 'linear-gradient(45deg, #808080 25%, transparent 25%), linear-gradient(-45deg, #808080 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #808080 75%), linear-gradient(-45deg, transparent 75%, #808080 75%)',
-        backgroundSize: '20px 20px',
-        backgroundPosition: '0 0, 0 10px, 10px -10px, -10px 0px'
+        ...backgroundStyles[backgroundStyle]
       }}>
         <Image
           src={image.url}
@@ -56,12 +57,19 @@ const DraggableImageItem = ({ image, index, moveImage }) => {
           preview={false}
         />
       </div>
-      <span style={{ marginLeft: '8px' }}>{image.name}</span>
+      <span style={{ marginLeft: '8px', flex: 1 }}>{image.name}</span>
+      <Button 
+        type="text" 
+        icon={<DeleteOutlined />} 
+        danger
+        onClick={() => onDelete(index)}
+        style={{ marginLeft: '8px' }}
+      />
     </div>
   );
 };
 
-const DraggableImageList = ({ images, onMoveImage }) => {
+const DraggableImageList = ({ images, onMoveImage, onDeleteImage }) => {
   return (
     <List
       dataSource={images}
@@ -71,6 +79,7 @@ const DraggableImageList = ({ images, onMoveImage }) => {
           image={image}
           index={index}
           moveImage={onMoveImage}
+          onDelete={onDeleteImage}
         />
       )}
     />

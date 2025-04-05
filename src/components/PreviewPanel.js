@@ -1,15 +1,18 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Modal, Slider, Button, Space } from 'antd';
-import { PlayCircleOutlined, PauseCircleOutlined } from '@ant-design/icons';
+import { Modal, Slider, Button, Space, Switch, Divider } from 'antd';
+import { PlayCircleOutlined, PauseCircleOutlined, RetweetOutlined } from '@ant-design/icons';
+import { useConfig } from '../contexts/ConfigContext';
 
 const PreviewPanel = ({ images, visible, onClose }) => {
   const [currentFrame, setCurrentFrame] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isLooping, setIsLooping] = useState(true);
   const [fps, setFps] = useState(10);
   const [imageSize, setImageSize] = useState({ width: 100, height: 100 });
+  const { backgroundStyle, backgroundStyles } = useConfig();
   const timerRef = useRef(null);
 
-  const MIN_WIDTH = 400;
+  const MIN_WIDTH = 800;
   const MIN_HEIGHT = 100;
 
   useEffect(() => {
@@ -28,7 +31,17 @@ const PreviewPanel = ({ images, visible, onClose }) => {
   useEffect(() => {
     if (isPlaying) {
       timerRef.current = setInterval(() => {
-        setCurrentFrame(prev => (prev + 1) % images.length);
+        setCurrentFrame(prev => {
+          const next = prev + 1;
+          if (next >= images.length) {
+            if (!isLooping) {
+              setIsPlaying(false);
+              return prev;
+            }
+            return 0;
+          }
+          return next;
+        });
       }, 1000 / fps);
     } else {
       clearInterval(timerRef.current);
@@ -37,9 +50,12 @@ const PreviewPanel = ({ images, visible, onClose }) => {
     return () => {
       clearInterval(timerRef.current);
     };
-  }, [isPlaying, fps, images.length]);
+  }, [isPlaying, fps, images.length, isLooping]);
 
   const handlePlayPause = () => {
+    if (!isPlaying && currentFrame === images.length - 1) {
+      setCurrentFrame(0);
+    }
     setIsPlaying(!isPlaying);
   };
 
@@ -52,8 +68,8 @@ const PreviewPanel = ({ images, visible, onClose }) => {
     setFps(value);
   };
 
-  const modalWidth = Math.max(Math.min(imageSize.width + 100, 800), MIN_WIDTH);
-  const previewWidth = Math.min(imageSize.width, modalWidth - 100);
+  const modalWidth = Math.max(Math.min(imageSize.width + 300, 1200), MIN_WIDTH);
+  const previewWidth = Math.min(imageSize.width, modalWidth - 200);
   const previewHeight = (previewWidth / imageSize.width) * imageSize.height;
 
   return (
@@ -67,58 +83,86 @@ const PreviewPanel = ({ images, visible, onClose }) => {
         minHeight: MIN_HEIGHT + 100,
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        padding: '24px'
       }}
     >
-      <div style={{ textAlign: 'center', marginBottom: 20 }}>
-        <div style={{
-          width: previewWidth,
-          height: previewHeight,
-          margin: '0 auto',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          backgroundImage: 'linear-gradient(45deg, #808080 25%, transparent 25%), linear-gradient(-45deg, #808080 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #808080 75%), linear-gradient(-45deg, transparent 75%, #808080 75%)',
-          backgroundSize: '20px 20px',
-          backgroundPosition: '0 0, 0 10px, 10px -10px, -10px 0px'
-        }}>
-          {images.length > 0 && (
-            <img
-              src={images[currentFrame].url}
-              alt={`Frame ${currentFrame + 1}`}
-              style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }}
-            />
-          )}
+      <Space direction="vertical" size="large" style={{ width: '100%' }}>
+        <div style={{ textAlign: 'center' }}>
+          <div style={{
+            width: previewWidth,
+            height: previewHeight,
+            margin: '0 auto',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            ...backgroundStyles[backgroundStyle]
+          }}>
+            {images.length > 0 && (
+              <img
+                src={images[currentFrame].url}
+                alt={`Frame ${currentFrame + 1}`}
+                style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }}
+              />
+            )}
+          </div>
         </div>
-        <Space direction="vertical" style={{ width: '100%', marginTop: 20 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-            <Button
-              icon={isPlaying ? <PauseCircleOutlined /> : <PlayCircleOutlined />}
-              onClick={handlePlayPause}
-            >
-              {isPlaying ? '暂停' : '播放'}
-            </Button>
-            <span>帧率: {fps} FPS</span>
-          </div>
-          <Slider
-            min={1}
-            max={30}
-            value={fps}
-            onChange={handleFpsChange}
-            style={{ width: '100%' }}
-          />
-          <Slider
-            min={0}
-            max={images.length - 1}
-            value={currentFrame}
-            onChange={handleFrameChange}
-            style={{ width: '100%' }}
-          />
-          <div>
-            当前帧: {currentFrame + 1} / {images.length}
-          </div>
-        </Space>
-      </div>
+        
+        <Divider style={{ margin: '12px 0' }} />
+        
+        <div style={{ padding: '0 24px' }}>
+          <Space direction="vertical" size="middle" style={{ width: '100%' }}>
+            <Space style={{ width: '100%', justifyContent: 'center' }}>
+              <Button
+                icon={isPlaying ? <PauseCircleOutlined /> : <PlayCircleOutlined />}
+                onClick={handlePlayPause}
+                size="large"
+              >
+                {isPlaying ? '暂停' : '播放'}
+              </Button>
+              <Space>
+                <RetweetOutlined />
+                <Switch
+                  checked={isLooping}
+                  onChange={setIsLooping}
+                  size="default"
+                />
+                <span>循环播放</span>
+              </Space>
+            </Space>
+
+            <div style={{ padding: '0 12px' }}>
+              <div style={{ marginBottom: 8 }}>
+                <Space style={{ width: '100%', justifyContent: 'space-between' }}>
+                  <span>帧率控制:</span>
+                  <span>{fps} FPS</span>
+                </Space>
+                <Slider
+                  min={1}
+                  max={60}
+                  value={fps}
+                  onChange={handleFpsChange}
+                  style={{ width: '100%' }}
+                />
+              </div>
+
+              <div>
+                <Space style={{ width: '100%', justifyContent: 'space-between' }}>
+                  <span>帧数控制:</span>
+                  <span>{currentFrame + 1} / {images.length}</span>
+                </Space>
+                <Slider
+                  min={0}
+                  max={images.length - 1}
+                  value={currentFrame}
+                  onChange={handleFrameChange}
+                  style={{ width: '100%' }}
+                />
+              </div>
+            </div>
+          </Space>
+        </div>
+      </Space>
     </Modal>
   );
 };

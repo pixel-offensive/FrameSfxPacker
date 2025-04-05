@@ -14,7 +14,7 @@
 
 ## 在线体验
 
-访问 [GitHub Pages](https://yourusername.github.io/frame-sfx-packer) 在线体验
+访问 [GitHub Pages](https://pixel-offensive.github.io/FrameSfxPacker/) 在线体验
 
 ## 本地开发
 
@@ -116,16 +116,11 @@ npm run build
 4. 推送到分支 (`git push origin feature/AmazingFeature`)
 5. 打开一个 Pull Request
 
-## 许可证
-
-本项目采用 MIT 许可证 - 详情请参阅 [LICENSE](LICENSE) 文件
-
 ## 联系方式
 
 如有任何问题或建议，请通过以下方式联系：
 
 - 提交 Issue
-- 发送邮件至 [您的邮箱]
 
 ## 致谢
 
