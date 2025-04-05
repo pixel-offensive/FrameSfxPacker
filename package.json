@@ -2,6 +2,7 @@
   "name": "frame-sfx-packer",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://Soldier233.github.io/frame-sfx-packer",
   "dependencies": {
     "@ant-design/pro-components": "^2.6.43",
     "@testing-library/dom": "^10.4.0",
