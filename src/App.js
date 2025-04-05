@@ -7,7 +7,6 @@ import { ProCard } from '@ant-design/pro-components';
 import DraggableImageList from './components/DraggableImageList';
 import PreviewPanel from './components/PreviewPanel';
 import ExportPreview from './components/ExportPreview';
-import { packImages, downloadFiles } from './utils/imagePacker';
 import './App.css';
 
 const extractNumber = (filename) => {
@@ -25,7 +24,6 @@ const sortImages = (images) => {
 
 const App = () => {
   const [images, setImages] = useState([]);
-  const [loading, setLoading] = useState(false);
   const [previewVisible, setPreviewVisible] = useState(false);
   const [exportVisible, setExportVisible] = useState(false);
 
@@ -129,7 +127,6 @@ const App = () => {
             <Button
               type="primary"
               onClick={handleExport}
-              loading={loading}
               disabled={images.length === 0}
             >
               导出序列帧
