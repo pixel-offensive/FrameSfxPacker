@@ -36,3 +36,28 @@
     transform: rotate(360deg);
   }
 }
+
+.app-container {
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 0 20px;
+}
+
+.upload-section {
+  margin-bottom: 20px;
+  display: flex;
+  gap: 16px;
+}
+
+.ant-list {
+  margin-top: 20px;
+}
+
+.ant-image {
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.ant-list-item {
+  padding: 0 !important;
+}
